@@ -2,15 +2,17 @@ use DoctorWho
 
 GO
 create function fnEnemies (@EpisodeId int)
-returns table as
+returns varchar(max)
+as begin
+	
+	Declare @val Varchar(MAX)
 
-	return (
-		select e.EnemyName, ee.EpisodeId
-		from tblEpisodeEnemy ee
-		inner join tblEnemy e
-		on e.EnemyId = ee.EnemyId
-		where ee.EpisodeId = @EpisodeId
-	);
+	select @val = COALESCE(@val + ', ' + enemy.EnemyName, enemy.EnemyName) 
+	from tblEpisodeEnemy ee
+	inner join tblEnemy enemy
+	on enemy.EnemyId = ee.EnemyId
+	where ee.EpisodeId = @EpisodeId
+	
+	return (select @val as enemies)
+end
 GO
-
-select * from dbo.fnEnemies(2)
