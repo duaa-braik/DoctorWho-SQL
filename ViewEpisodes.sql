@@ -8,5 +8,5 @@ on E.AuthorId = author.AuthorId
 inner join tblDoctor doctor
 on doctor.DoctorId = E.DoctorId
 )
-
+GO
 select * from viewEpisodes
